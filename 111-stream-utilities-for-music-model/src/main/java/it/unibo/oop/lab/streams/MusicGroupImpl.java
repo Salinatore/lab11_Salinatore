@@ -9,9 +9,11 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -87,16 +89,14 @@ public final class MusicGroupImpl implements MusicGroup {
 
     @Override
     public Optional<String> longestAlbum() {
-        return this.albums.keySet().stream()
-                .max(Comparator.comparingDouble(this::albumDuration));
-    }
-
-    private Double albumDuration(String album) {
         return this.songs.stream()
-            .filter(song -> song.getAlbumName().isPresent())
-            .filter(song -> (song.getAlbumName().get().equals(album)))
-            .map(Song::getDuration)
-            .reduce(Double::sum).get();
+                .filter(song -> song.getAlbumName().isPresent())
+                .collect(Collectors.groupingBy(Song::getAlbumName, Collectors.summingDouble(Song::getDuration)))
+                .entrySet().stream()
+                .max(Comparator.comparingDouble(Entry::getValue)) //.max((e1, e2) ->  Double.compare(e1.getValue(), e2.getValue())).get().getKey();
+                .get().getKey();
+                
+                
     }
 
     private static final class Song {
