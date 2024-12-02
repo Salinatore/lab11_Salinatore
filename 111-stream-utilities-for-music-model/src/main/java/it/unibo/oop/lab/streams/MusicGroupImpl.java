@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.maxBy;
 import static java.util.stream.Collectors.minBy;
 import static java.util.stream.Collectors.reducing;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -87,7 +88,7 @@ public final class MusicGroupImpl implements MusicGroup {
     @Override
     public Optional<String> longestAlbum() {
         return this.albums.keySet().stream()
-                .max((a1, a2) -> Double.compare(this.albumDuration(a1), this.albumDuration(a2)));
+                .max(Comparator.comparingDouble(this::albumDuration));
     }
 
     private Double albumDuration(String album) {
