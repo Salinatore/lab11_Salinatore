@@ -14,7 +14,7 @@ public final class Test {
      * che aggiunga all'esercizio precedente la seguente funzionalità:
      * - dopo 10 secondi dalla partenza dell'applicazione, i pulsanti si disabilitino
      *   e il conteggio si fermi comunque.
-     *   - fare attenzione a non creare corse critiche
+     * - fare attenzione a non creare corse critiche
      *
      * Suggerimenti:
      * - si usi un ulteriore agente...
