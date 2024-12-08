@@ -13,7 +13,11 @@ public class MultiThreadedMatrixSumClassic implements SumMatrix {
      *            no. of thread performing the sum.
      */
     public MultiThreadedMatrixSumClassic(final int nthread) {
-        this.nthread = nthread;
+        if (nthread > 0) {
+            this.nthread = nthread;
+        } else {
+            throw new IllegalArgumentException("Not enough threads");
+        }
     }
 
     private static class Worker extends Thread {
