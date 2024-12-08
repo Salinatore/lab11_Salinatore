@@ -59,5 +59,4 @@ class TestMatrix {
                     + TimeUnit.NANOSECONDS.toMillis(time) + MSEC);
         }
     }
-
 }

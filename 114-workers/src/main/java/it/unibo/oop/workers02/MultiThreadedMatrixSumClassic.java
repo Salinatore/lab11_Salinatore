@@ -42,6 +42,7 @@ public class MultiThreadedMatrixSumClassic implements SumMatrix {
         @Override
         @SuppressWarnings("PMD.SystemPrintln")
         public void run() {
+            System.out.println("Working from row " + startRow + " to row " + (startRow + nOfRows - 1));
             for (int iRow = startRow; iRow < matrix.length && iRow < (nOfRows + startRow); iRow++) {
                 for (double element: matrix[iRow]) {
                     this.res = this.res + element;
@@ -63,24 +64,13 @@ public class MultiThreadedMatrixSumClassic implements SumMatrix {
     @Override
     public double sum(double[][] matrix) {
         final int size = matrix.length % nthread + matrix.length / nthread;
-        /*
-         * Build a list of workers
-         */
         final List<Worker> workers = new ArrayList<>(nthread);
         for (int start = 0; start < matrix.length; start += size) {
             workers.add(new Worker(matrix, start, size));
         }
-        /*
-         * Start them
-         */
         for (final Worker w: workers) {
             w.start();
         }
-        /*
-         * Wait for every one of them to finish. This operation is _way_ better done by
-         * using barriers and latches, and the whole operation would be better done with
-         * futures.
-         */
         long sum = 0;
         for (final Worker w: workers) {
             try {
@@ -90,10 +80,6 @@ public class MultiThreadedMatrixSumClassic implements SumMatrix {
                 throw new IllegalStateException(e);
             }
         }
-        /*
-         * Return the sum
-         */
         return sum;
     }
-
 }
